@@ -39,7 +39,7 @@ class MyListener(val customerRepository: CustomerRepository) : ApplicationListen
     override fun onApplicationEvent(event: ApplicationReadyEvent) {
         runBlocking {
             val customers: Flow<Customer> = flowOf("James", "Josh").map { Customer(null, it) }
-            customerRepository.saveAll(customers).collect { print(it) }//look ma, no Flow!
+            customerRepository.saveAll(customers).collect { println (it) }//look ma, no Flow!
         }
     }
 }
