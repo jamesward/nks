@@ -1,8 +1,7 @@
 package com.example.nativekotlin
 
-import kotlinx.serialization.Serializable
-
 expect annotation class Id()
+expect annotation class Serializable()
 
 @Serializable
 data class Customer(@Id val id: Int?, val name: String)
