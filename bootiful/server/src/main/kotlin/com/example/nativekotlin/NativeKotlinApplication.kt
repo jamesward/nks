@@ -1,5 +1,6 @@
 package com.example.nativekotlin
 
+import Customer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -46,5 +47,3 @@ class MyListener(val customerRepository: CustomerRepository) : ApplicationListen
 
 
 interface CustomerRepository : CoroutineCrudRepository<Customer, Int> ///???
-
-data class Customer(@Id val id: Int?, val name: String)
