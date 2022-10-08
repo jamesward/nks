@@ -1,1 +1,1 @@
-typealias Id = org.springframework.data.annotation.Id
+actual typealias Id = org.springframework.data.annotation.Id

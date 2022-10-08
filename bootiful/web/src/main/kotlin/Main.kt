@@ -12,7 +12,15 @@ import org.jetbrains.compose.web.renderComposable
 
 @Composable
 fun CustomerUI(customers: List<Customer>) {
-    Text("hello, world")
+    Div {
+        Ul {
+            customers.map {
+                Li {
+                    Text(it.name)
+                }
+            }
+        }
+    }
 }
 
 suspend fun main() {
