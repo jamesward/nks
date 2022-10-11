@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<kotlin.version>1.7.10</kotlin.version>
-		<testcontainers.version>1.17.3</testcontainers.version>
+		<testcontainers.version>1.17.4</testcontainers.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,13 +77,6 @@
 			<artifactId>r2dbc</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<scope>test</scope>
-		</dependency>
-		-->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
