@@ -1,5 +1,11 @@
 # nks
 
+start.spring.io
+- R2DBC
+- Testcontainers
+- Reactive Web
+- PostgreSQL
+
 ## service 
 - `docker-compose.yml`
 - jdbc + servlet and a fresh coat of kotlin paint
@@ -11,7 +17,6 @@
 - aot: go native kotlin, not kotlin native (but that's cool too)
 - testing
   - testcontainers 
-- change dev url to testcontainers, too
 
 
 ## client 
