@@ -7,10 +7,9 @@ import kotlinx.coroutines.runBlocking
 import org.springframework.aot.hint.MemberCategory
 import org.springframework.aot.hint.RuntimeHints
 import org.springframework.aot.hint.RuntimeHintsRegistrar
+import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.boot.runApplication
-import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.data.annotation.Id
@@ -27,7 +26,12 @@ import java.time.ZonedDateTime
 class DemoApplication {
 
     @Bean
-    fun myListener(cr: CustomerRepository) = MyListener(cr)
+    fun runner(cr: CustomerRepository) = ApplicationRunner {
+        runBlocking {
+            val customers: Flow<Customer> = flowOf("James", "Josh").map { Customer(null, it) }
+            cr.saveAll(customers).collect { println(it) }//look ma, no Flow!
+        }
+    }
 
     @Bean
     fun http(cr: CustomerRepository) = coRouter {
@@ -37,24 +41,11 @@ class DemoApplication {
     }
 }
 
-
-class MyListener(val customerRepository: CustomerRepository) : ApplicationListener<ApplicationReadyEvent> {
-
-    override fun onApplicationEvent(event: ApplicationReadyEvent) {
-        runBlocking {
-            val customers: Flow<Customer> = flowOf("James", "Josh").map { Customer(null, it) }
-            customerRepository.saveAll(customers).collect { println(it) }//look ma, no Flow!
-        }
-    }
-}
-
-
 class MyHints : RuntimeHintsRegistrar {
 
     override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-        val mcs = MemberCategory.values()
         listOf(Customer::class.java, Array<Instant>::class.java, Array<ZonedDateTime>::class.java).forEach {
-            hints.reflection().registerType(it, *mcs)
+            hints.reflection().registerType(it, *MemberCategory.values())
         }
     }
 }
