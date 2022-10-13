@@ -28,7 +28,8 @@ class DemoApplication {
     @Bean
     fun runner(cr: CustomerRepository) = ApplicationRunner {
         runBlocking {
-            val customers: Flow<Customer> = flowOf("James", "Josh").map { Customer(null, it) }
+            val customers: Flow<Customer> = flowOf("James", "Josh")
+                                            .map { Customer(null, it) }
             cr.saveAll(customers).collect { println(it) }//look ma, no Flow!
         }
     }
