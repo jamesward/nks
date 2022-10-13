@@ -1,6 +1,5 @@
-package com.example.nativekotlin.com.example.nativekotlin
+package com.example.nativekotlin
 
-import com.example.nativekotlin.CustomerRepository
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.runBlocking
