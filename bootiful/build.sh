@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rm -rf target && mvn -Pnative clean package && ./target/native-kotlin
+rm -rf target && ./mvnw -Pnative native:compile && ./target/native-kotlin

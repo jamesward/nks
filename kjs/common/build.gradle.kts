@@ -22,12 +22,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(kotlin("stdlib"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
             }
         }
         val jvmMain by getting {
             dependencies {
-                implementation("org.springframework.data:spring-data-commons:2.7.2")
+                implementation("org.springframework.data:spring-data-commons:3.0.0")
             }
         }
     }

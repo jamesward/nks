@@ -24,7 +24,6 @@ import java.time.ZonedDateTime
 @ImportRuntimeHints(MyHints::class)
 @SpringBootApplication
 class DemoApplication {
-
     @Bean
     fun runner(cr: CustomerRepository) = ApplicationRunner {
         runBlocking {
@@ -43,11 +42,8 @@ class DemoApplication {
 }
 
 class MyHints : RuntimeHintsRegistrar {
-
     override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-        listOf(Customer::class.java, Array<Instant>::class.java, Array<ZonedDateTime>::class.java).forEach {
-            hints.reflection().registerType(it, *MemberCategory.values())
-        }
+        hints.reflection().registerType(Customer::class.java, *MemberCategory.values())
     }
 }
 
