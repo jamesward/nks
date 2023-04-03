@@ -1,34 +1,32 @@
-package com.example.nativekotlin
+package bootiful.kotlin
+
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
-import org.springframework.aot.hint.MemberCategory
-import org.springframework.aot.hint.RuntimeHints
-import org.springframework.aot.hint.RuntimeHintsRegistrar
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ImportRuntimeHints
 import org.springframework.data.annotation.Id
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyAndAwait
 import org.springframework.web.reactive.function.server.coRouter
-import java.time.Instant
-import java.time.ZonedDateTime
 
-// https://github.com/oracle/graalvm-reachability-metadata/
-@ImportRuntimeHints(MyHints::class)
+fun main(args: Array<String>) {
+    runApplication<KotlinApplication>(*args)
+}
+
 @SpringBootApplication
-class DemoApplication {
+class KotlinApplication {
+
     @Bean
     fun runner(cr: CustomerRepository) = ApplicationRunner {
         runBlocking {
             val customers: Flow<Customer> = flowOf("James", "Josh")
-                                            .map { Customer(null, it) }
+                .map { Customer(null, it) }
             cr.saveAll(customers).collect { println(it) }//look ma, no Flow!
         }
     }
@@ -39,16 +37,6 @@ class DemoApplication {
             ServerResponse.ok().bodyAndAwait(cr.findAll())
         }
     }
-}
-
-class MyHints : RuntimeHintsRegistrar {
-    override fun registerHints(hints: RuntimeHints, classLoader: ClassLoader?) {
-        hints.reflection().registerType(Customer::class.java, *MemberCategory.values())
-    }
-}
-
-fun main(args: Array<String>) {
-    runApplication<DemoApplication>(*args)
 }
 
 interface CustomerRepository : CoroutineCrudRepository<Customer, Int>
