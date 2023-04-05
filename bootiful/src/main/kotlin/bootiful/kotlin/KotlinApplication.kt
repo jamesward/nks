@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.annotation.Id
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.bodyAndAwait
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.web.reactive.function.server.buildAndAwait
 import org.springframework.web.reactive.function.server.coRouter
 
 fun main(args: Array<String>) {
@@ -34,13 +36,15 @@ class KotlinApplication {
 
     @Bean
     fun http(cr: CustomerRepository) = coRouter {
+        GET("/customers") {
+            ServerResponse.ok().bodyAndAwait(cr.findAll())
+        }
         GET("/customers/{id}") {
             val id = it.pathVariable("id").toInt()
             cr
                 .findById(id)?.let { customer ->
                     ServerResponse.ok().bodyValueAndAwait(customer)
-                } ?: ServerResponse.notFound().build().awaitSingle()
-
+                } ?: ServerResponse.notFound().buildAndAwait()
         }
     }
 }
