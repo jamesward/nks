@@ -1,59 +1,25 @@
 import kotlinx.browser.document
-import kotlinx.dom.appendText
 import kotlinx.browser.window
-import kotlin.js.Promise
 import kotlinx.coroutines.await
+import kotlinx.dom.appendElement
+import org.w3c.fetch.Response
+import kotlin.js.Promise
 
-/*
-external class PromiseString {
-    fun then(f: (String) -> Unit): PromiseString
+external interface Customer {
+    val name: String
 }
 
-external class Customer(id: Int?, name: String)
-
-external class PromiseJson {
-    fun then(f: (Array<Customer>) -> Unit): PromiseJson
+external interface JsCustomerArray {
+    fun at(indice: Int): Customer
+    val length: Int
 }
-
-external class Response {
-    val status: Int
-    fun text(): PromiseString
-    fun json(): PromiseJson
-}
-
-external class PromiseResponse {
-    fun then(f: (Response) -> Unit): PromiseResponse
-}
-
-external fun fetch(url: String): PromiseResponse
- */
-
-//data class Customer(val id: Int?, val name: String)
 
 suspend fun main() {
-    val resp = Promise.resolve(window.fetch("/customers".asDynamic()).asDynamic()).await<org.w3c.fetch.Response>()
-    val json = Promise.resolve(resp.json().asDynamic()).await<Dynamic>()
-    println(json)
-    /*
-        val resp = it?.unsafeCast<org.w3c.fetch.Response>()
-        resp?.json()?.then { json ->
-            println(json)
-            //println(j.size())
-            Unit.asDynamic()
+    val resp = Promise.resolve(window.fetch("/customers".asDynamic()).asDynamic()).await<Response>()
+    val json = Promise.resolve(resp.json().asDynamic()).await<JsCustomerArray>()
+    for (i in 0 until json.length) {
+        document.body?.appendElement("li") {
+            textContent = json.at(i).name
         }
-        Unit.asDynamic()
     }
-     */
-    /*
-
-        println("then")
-        println(it).asDynamic()
-        /*
-        it.json().then { s ->
-            println(s)
-        }
-         */
-    }
-     */
-    //document.body?.appendText("Hello, ${greet()}!")
 }
