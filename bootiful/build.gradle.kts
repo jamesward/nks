@@ -48,6 +48,10 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks.withType<org.springframework.boot.gradle.tasks.aot.ProcessAot> {
+	systemProperty("spring.r2dbc.url", "placeholder_for_aot")
+}
+
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootBuildImage> {
 	docker {
 		host = "inherit"
